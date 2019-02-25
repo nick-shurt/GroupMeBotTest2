@@ -1,7 +1,7 @@
 {
-  "name": "GroupMe Bot",
+  "name": "FantasyFootbot",
   "description": "Basic Groupme Bot written in Node",
-  "repository": "https://github.com/sw8lde/GroupMe-Bot",
+  "repository": "https://github.com/nick-shurt/GroupMe-Bot",
   "logo": "",
   "keywords": []
 }
