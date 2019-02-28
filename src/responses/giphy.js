@@ -11,13 +11,13 @@ async function respond(msg) {
 
 	try {
 		let resp = await rp({
-			method: 'GET',      
+			method: 'GET',
 			url: `http://api.giphy.com/v1/gifs/5pUGvckBvGSNvDOInk&api_key=${config.GIHPY_KEY}`,
 			json: true
 		});
 		if(resp.data.length) {
 			let gif = Math.floor(Math.random() * Math.min(resp.data.length, 10));
-			bot.postMsg('https://media.giphy.com/media/5pUGvckBvGSNvDOInk/giphy.gif')
+			bot.postMsg(resp.data[gif].images.fixed_height.url)
 		} else {
 			console.log('No gifs for: ' + search);
 		}
