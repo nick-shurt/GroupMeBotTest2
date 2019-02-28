@@ -1,5 +1,5 @@
 {
-  "name": "fantasyfootbot6",
+  "name": "transfertestbot",
   "version": "0.1.0",
   "description": "A simple GroupMe bot",
   "main": "src/index.js",
