@@ -12,7 +12,7 @@ async function respond(msg) {
 	try {
 		let resp = await rp({
 			method: 'GET',
-			url: `http://api.giphy.com/v1/gifs/5pUGvckBvGSNvDOInk&api_key=${config.GIHPY_KEY}`,
+			url: `http://api.giphy.com/v1/gifs/5pUGvckBvGSNvDOInk?api_key=${config.GIHPY_KEY}`,
 			json: true
 		});
 		if(resp.data.length) {
