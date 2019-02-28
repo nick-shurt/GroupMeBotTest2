@@ -17,7 +17,7 @@ async function respond(msg) {
 		});
 		if(resp.data.length) {
 			let gif = Math.floor(Math.random() * Math.min(resp.data.length, 10));
-			bot.postMsg('https://media1.giphy.com/media/5pUGvckBvGSNvDOInk/200.gif')
+			bot.postMsg('https://media.giphy.com/media/5pUGvckBvGSNvDOInk/200.gif')
 		} else {
 			console.log('No gifs for: ' + search);
 		}
