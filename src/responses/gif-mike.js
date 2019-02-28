@@ -3,7 +3,7 @@ const bot = require('../bot')
 const rp = require('request-promise');
 
 function trigger(msg) {
-	return /@mike/i.test(msg.text);
+	return /mike/i.test(msg.text);
 }
 
 async function respond(msg) {
