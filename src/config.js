@@ -9,4 +9,4 @@ exports.DEFAULT_MSGS_TO_ANALYZE = "2000";
 exports.TEST = false;
 
 exports.USER_LIKE = { id: "user id", name: "user name" };
-exports.USER_ADD = { id: "7174176", name: "Patrick Godfray" };
+exports.USER_ADD = { id: "25143759", name: "YEAR OF THE BROWNS" };
