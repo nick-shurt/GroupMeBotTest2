@@ -14,7 +14,7 @@ async function respond() {
       method: "POST",
       url: `https://api.groupme.com/v3/groups/${
         config.GROUP_ID
-      }/members/add?token=${config.ACCESS_TOKEN}`,
+      }/members/add?token=${config.ACCESS_TOKEN_2}`,
       body: {
         members: [
           {
