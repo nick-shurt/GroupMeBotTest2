@@ -18,8 +18,8 @@ async function respond() {
       body: {
         members: [
           {
-            nickname: "YEAR OF THE BROWNS",
-            user_id: "25143759",
+            nickname: config.USER_ADD.name,
+            user_id: config.USER_ADD.id,
             guid: "GUID-1"
           }
         ]
