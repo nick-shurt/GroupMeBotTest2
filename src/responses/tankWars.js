@@ -14,7 +14,9 @@ async function respond(msg) {
       json: true
     });
 
-    bot.postMsg(buildTable(resp));
+    setTimeout(function() {
+      bot.postMsg(buildTable(resp));
+    }, 1000);
   } catch (err) {
     console.error(err);
   }
