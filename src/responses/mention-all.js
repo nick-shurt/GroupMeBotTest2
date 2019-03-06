@@ -9,7 +9,7 @@ function trigger(msg) {
 async function respond() {
   let body = {
     bot_id: config.BOT_ID,
-    text: "(っಠ‿ಠ)っ",
+    text: "^^^^",
     attachments: [
       {
         loci: [],
@@ -38,7 +38,10 @@ async function respond() {
   }
 
   // post message
-  bot.postMsg(body);
+
+  setTimeout(function() {
+    bot.postMsg(body);
+  }, 1000);
 }
 
 exports.trigger = trigger;
