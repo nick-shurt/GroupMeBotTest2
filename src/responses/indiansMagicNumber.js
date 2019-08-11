@@ -3,7 +3,7 @@ const bot = require("../bot");
 const rp = require("request-promise");
 
 function trigger(msg) {
-  return /are the indians playing/i.test(msg.text);
+  return /oh okay lit/i.test(msg.text);
 }
 
 async function respond(msg) {
