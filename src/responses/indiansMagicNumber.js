@@ -3,7 +3,7 @@ const bot = require("../bot");
 const rp = require("request-promise");
 
 function trigger(msg) {
-  return /oh okay lit/i.test(msg.text);
+  return /indians magic number/i.test(msg.text);
 }
 
 async function respond(msg) {
@@ -31,8 +31,7 @@ async function respond(msg) {
     console.log(message);
 
     setTimeout(function() {
-      //bot.postMsg(message);
-      console.log(message);
+      bot.postMsg(message);
     }, 1000);
   } catch (err) {
     console.error(err);
