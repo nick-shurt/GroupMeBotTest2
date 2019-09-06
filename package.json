@@ -7,11 +7,13 @@
     "start": "node src/index.js"
   },
   "dependencies": {
+    "coinbase": "^2.0.8",
     "director": "",
+    "espn-fantasy-football-api": "^0.11.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2",
-    "sentiment": "^5.0.1",
-    "sprintf-js": "^1.0.3"
+    "request-promise": "^4.2.4",
+    "sentiment": "^5.0.2",
+    "sprintf-js": "^1.1.2"
   },
   "engines": {
     "node": "8.11.3"
