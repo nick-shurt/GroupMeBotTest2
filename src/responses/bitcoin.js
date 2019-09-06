@@ -4,7 +4,7 @@ const rp = require("request-promise");
 var Client = require("coinbase").Client;
 
 function trigger(msg) {
-  return /@bitcoin/i.test(msg.text);
+  return /There is the link/i.test(msg.text);
 }
 
 async function respond(msg) {
@@ -28,9 +28,10 @@ async function respond(msg) {
       );
 
       setTimeout(function() {
-        bot.postMsg(
-          "Current bitcoin price in " + currencyCode + ": $" + value.toFixed(2)
-        );
+        //bot.postMsg(
+          //"Current bitcoin price in " + currencyCode + ": $" + value.toFixed(2)
+        //);
+        console.log("Current bitcoin price in " + currencyCode + ": $" + value.toFixed(2));
       }, 1000);
     });
   } catch (err) {
