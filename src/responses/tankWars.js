@@ -3,7 +3,7 @@ const bot = require("../bot");
 const rp = require("request-promise");
 
 function trigger(msg) {
-  return /zion tank war/i.test(msg.text);
+  return /nba tank war/i.test(msg.text);
 }
 
 async function respond(msg) {
@@ -41,8 +41,8 @@ function getTeamName(teamId) {
   if (teamId == "1610612739") {
     team = "CLE";
   }
-  if (teamId == "1610612756") {
-    team = "PHX";
+  if (teamId == "1610612740") {
+    team = "NOP";
   }
   if (teamId == "1610612752") {
     team = "NYK";
@@ -58,6 +58,9 @@ function getTeamName(teamId) {
   }
   if (teamId == "1610612764") {
     team = "WAS";
+  }
+  if (teamId == "1610612744") {
+    team = "GSW";
   }
   return team;
 }
