@@ -7,7 +7,7 @@ function trigger(msg) {
 async function respond(msg) {
   try {
     setTimeout(function() {
-        bot.postMsg("https://docs.google.com/spreadsheets/d/1Vtpz-qxfmympSoEwsnqZSL79odxMmxC1fWP21U7m_fM/edit?usp=sharing");
+        bot.postMsg("https://docs.google.com/spreadsheets/d/1S7pqIiMrg97vysptgdL2kIMkVQ2vO53hs-7a4eCA8_4/edit#gid=0");
     }, 1000);
   } catch (err) {
     console.error(err);
