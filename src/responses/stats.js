@@ -46,7 +46,7 @@ async function getInfo(num) {
 	try {
 		let resp = await rp({
 			method: 'GET',
-			url: `https://api.groupme.com/v3/groups/${config.GROUP_ID}?token=${config.ACCESS_TOKEN}`,
+			url: `https://api.groupme.com/v3/groups/17201124?token=${config.ACCESS_TOKEN}`,
 			json: true
 		});
 		
@@ -71,7 +71,7 @@ async function getInfo(num) {
 	// get messages
 	const options = {
 		method: 'GET',
-		url: `https://api.groupme.com/v3/groups/${config.GROUP_ID}/messages?token=${config.ACCESS_TOKEN}&limit=100`,
+		url: `https://api.groupme.com/v3/groups/17201124/messages?token=${config.ACCESS_TOKEN}&limit=100`,
 		json: true
 	};
 
