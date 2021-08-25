@@ -4,7 +4,7 @@ exports.GROUP_ID = "48392578";
 exports.GIHPY_KEY = "3cNm0IxmL2htInLe6AUQBfUQ7tbYU0IC";
 exports.ACCESS_TOKEN_2 = "4LffyUZhNDfb3iGQAea0Mu1EvhYaFajTH5PYdqLj";
 
-exports.DEFAULT_MSGS_TO_ANALYZE = "200000";
+exports.DEFAULT_MSGS_TO_ANALYZE = "10000";
 
 exports.TEST = false;
 
