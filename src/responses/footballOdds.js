@@ -59,10 +59,9 @@ async function respond(msg) {
                                 awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
                             }
             
-                            msgToSend = '==============================================\n';
                             msgToSend += 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
                             msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
-                            msgToSend += '===================================== ' + finalPct + ' ===\n';
+                            msgToSend += finalPct;
                         }
                     });
                 } else if (awayTeam.includes(input_team.toLowerCase())) {
@@ -84,10 +83,9 @@ async function respond(msg) {
                                 awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
                             }
             
-                            msgToSend = '================================\n';
                             msgToSend += 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
                             msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
-                            msgToSend += '======================= ' + finalPct + ' ===\n';
+                            msgToSend += finalPct;
                         }
                     });
                 }
