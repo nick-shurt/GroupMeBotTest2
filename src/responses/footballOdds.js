@@ -100,7 +100,7 @@ async function respond(msg) {
 
         })
         .catch(error => {
-            console.log('Error status', error.response.status)
+            console.log('Error', error)
             console.log(error.response.data)
         })
     } catch (err) {
