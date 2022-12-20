@@ -30,6 +30,9 @@ async function respond(msg) {
         })
         .then(response => {
             let results = response.data;
+            let remainingPercent = (response.headers['x-requests-used']/500) * 100;
+            let roundedPct = Math.round(remainingPercent * 10) / 10;
+            let finalPct = roundedPct.toFixed(1);
 
             results.forEach((result) => {
                 var homeTeam = result.home_team.toLowerCase();
