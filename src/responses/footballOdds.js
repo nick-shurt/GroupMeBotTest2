@@ -55,6 +55,7 @@ async function respond(msg) {
             let remainingPercent = (response.headers['x-requests-used']/500) * 100;
             let roundedPct = Math.round(remainingPercent * 10) / 10;
             let finalPct = roundedPct.toFixed(1);
+            let found = false;
 
             //ml
             if (markets === 'h2h') {
@@ -63,7 +64,6 @@ async function respond(msg) {
                     var homePrice;
                     var awayTeam = result.away_team.toLowerCase();
                     var awayPrice;
-                    var found = false;
                     
                     if (homeTeam.includes(input_team.toLowerCase()) && !found) {
                         found = true;
@@ -127,7 +127,6 @@ async function respond(msg) {
                     var o_uNum;
                     var overOdds;
                     var underOdds;
-                    var found = false;
 
                     if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
                         found = true;
