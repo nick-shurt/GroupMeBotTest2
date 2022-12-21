@@ -63,8 +63,10 @@ async function respond(msg) {
                     var homePrice;
                     var awayTeam = result.away_team.toLowerCase();
                     var awayPrice;
+                    var found = false;
                     
-                    if (homeTeam.includes(input_team.toLowerCase())) {
+                    if (homeTeam.includes(input_team.toLowerCase()) && !found) {
+                        found = true;
                         result.bookmakers.forEach((book) => {
                             if (book.key === 'fanduel') {
                                 if (book.markets[0].outcomes[0].name === result.home_team) {
@@ -88,7 +90,8 @@ async function respond(msg) {
                                 msgToSend += finalPct;
                             }
                         });
-                    } else if (awayTeam.includes(input_team.toLowerCase())) {
+                    } else if (awayTeam.includes(input_team.toLowerCase()) && !found) {
+                        found = true;
                         result.bookmakers.forEach((book) => {
                             if (book.key === 'fanduel') {
                                 if (book.markets[0].outcomes[0].name === result.home_team) {
@@ -124,8 +127,10 @@ async function respond(msg) {
                     var o_uNum;
                     var overOdds;
                     var underOdds;
+                    var found = false;
 
-                    if (homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) {
+                    if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
+                        found = true;
                         result.bookmakers.forEach((book) => {
                             if (book.key === 'fanduel') {
                                 o_uNum = book.markets[0].outcomes[0].point;
