@@ -150,8 +150,8 @@ async function respond(msg) {
                                     homeToEdit = space(homeToEdit, awayToEdit.length - homeToEdit.length);
                                 }
 
-                                msgToSend += 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')';
-                                msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')';
+                                msgToSend += 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
+                                msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')\n';
                                 msgToSend += finalPct;
                             }
                         });
