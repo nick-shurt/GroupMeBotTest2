@@ -65,32 +65,7 @@ async function respond(msg) {
                     var awayTeam = result.away_team.toLowerCase();
                     var awayPrice;
                     
-                    if (homeTeam.includes(input_team.toLowerCase()) && !found) {
-                        found = true;
-                        result.bookmakers.forEach((book) => {
-                            if (book.key === 'fanduel') {
-                                if (book.markets[0].outcomes[0].name === result.home_team) {
-                                    homePrice = book.markets[0].outcomes[0].price;
-                                    homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
-                                } else {
-                                    awayPrice = book.markets[0].outcomes[0].price;
-                                    awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
-                                }
-                
-                                if (book.markets[0].outcomes[1].name === result.home_team) {
-                                    homePrice = book.markets[0].outcomes[1].price;
-                                    homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
-                                } else {
-                                    awayPrice = book.markets[0].outcomes[1].price;
-                                    awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
-                                }
-                
-                                msgToSend += 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
-                                msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
-                                msgToSend += finalPct;
-                            }
-                        });
-                    } else if (awayTeam.includes(input_team.toLowerCase()) && !found) {
+                    if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
                         found = true;
                         result.bookmakers.forEach((book) => {
                             if (book.key === 'fanduel') {
@@ -156,6 +131,53 @@ async function respond(msg) {
 
                                 msgToSend += 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
                                 msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')\n';
+                                msgToSend += finalPct;
+                            }
+                        });
+                    }
+                });
+            }
+
+            //spread
+            if (markets === 'spreads') {
+                results.forEach((result) => {
+                    var homeTeam = result.home_team.toLowerCase();
+                    var homePrice;
+                    var homeLine;
+                    var awayTeam = result.away_team.toLowerCase();
+                    var awayPrice;
+                    var awayLine;
+                    
+                    if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
+                        found = true;
+                        result.bookmakers.forEach((book) => {
+                            if (book.key === 'fanduel') {
+                                if (book.markets[0].outcomes[0].name === result.home_team) {
+                                    homePrice = book.markets[0].outcomes[0].price;
+                                    homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
+                                    homeLine = book.markets[0].outcomes[0].point;
+                                    homeLine = (/^\d/.test(homeLine)) ? '+' + homeLine : homeLine;
+                                } else {
+                                    awayPrice = book.markets[0].outcomes[0].price;
+                                    awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
+                                    awayLine = book.markets[0].outcomes[0].point;
+                                    awayLine = (/^\d/.test(awayLine)) ? '+' + awayLine : awayLine;
+                                }
+                
+                                if (book.markets[0].outcomes[1].name === result.home_team) {
+                                    homePrice = book.markets[0].outcomes[1].price;
+                                    homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
+                                    homeLine = book.markets[0].outcomes[1].point;
+                                    homeLine = (/^\d/.test(homeLine)) ? '+' + homeLine : homeLine;
+                                } else {
+                                    awayPrice = book.markets[0].outcomes[1].price;
+                                    awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
+                                    awayLine = book.markets[0].outcomes[1].point;
+                                    awayLine = (/^\d/.test(awayLine)) ? '+' + awayLine : awayLine;
+                                }
+                
+                                msgToSend += 'Away: ' + result.away_team + '  ' + awayLine + ' (' + awayPrice + ')\n';
+                                msgToSend += 'Home: ' + result.home_team + '  ' + homeLine + ' (' + homePrice + ')\n';
                                 msgToSend += finalPct;
                             }
                         });
