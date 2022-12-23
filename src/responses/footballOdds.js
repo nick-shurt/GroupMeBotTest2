@@ -13,14 +13,6 @@ async function respond(msg) {
     let msgToSend = '';
     var input_team;
 
-    if (getMarket(input_split[0]) === 'not found') {
-        input_team = input_split[0]; 
-    } else {
-        input_team = input_split[1];
-    }
-    
-    console.log('MSG: ' + input_team);
-
     const getMarket = (str) => {
         var returnStr = 'not found';
         if (str.includes('o/u') || str.includes('over/under') ) {
@@ -39,6 +31,14 @@ async function respond(msg) {
         const spc = Array(numspace).fill(' ').join('')
         return str+spc
     }
+
+    if (getMarket(input_split[0]) === 'not found') {
+        input_team = input_split[0]; 
+    } else {
+        input_team = input_split[1];
+    }
+    
+    console.log('MSG: ' + input_team);
 
     const apiKey =  config.ODDS_API_KEY;
     const sportKey = 'americanfootball_nfl' // use the sport_key from the /sports endpoint below, or use 'upcoming' to see the next 8 games across all sports
