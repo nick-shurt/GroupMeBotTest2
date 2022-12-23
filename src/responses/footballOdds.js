@@ -9,13 +9,20 @@ function trigger(msg) {
 async function respond(msg) {
     let input = msg.text.replace(/.*@odds/i, "").trim();
     let lowerInput = input.toLowerCase();
-    let input_team = input.split(" ").pop().trim();
+    let input_split = lowerInput.split(" ");
+    let msgToSend = '';
+    var input_team;
+
+    if (getMarket(input_split[0]) === 'not found') {
+        input_team = input_split[0]; 
+    } else {
+        input_team = input_split[1];
+    }
+    
     console.log('MSG: ' + input_team);
 
-    let msgToSend = '';
-
     const getMarket = (str) => {
-        var returnStr;
+        var returnStr = 'not found';
         if (str.includes('o/u') || str.includes('over/under') ) {
             returnStr = 'totals';
         }
