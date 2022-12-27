@@ -209,14 +209,14 @@ async function respond(msg) {
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
-                      user: config.GMAIL_USER,
-                      pass: config.GMAIL_PASS
+                      user: process.env.GMAIL_USER,
+                      pass: process.env.GMAIL_PASS
                     }
                 });
                   
                 var mailOptions = {
-                    from: config.GMAIL_USER,
-                    to: config.GMAIL_USER,
+                    from: process.env.GMAIL_USER,
+                    to: process.env.GMAIL_USER,
                     subject: 'OddsAPI Request Limit Over 95%',
                     text: 'Your OddsAPI account has almost reached its monthly api call limit. Current usage: ' + finalPct + '%'
                 };
