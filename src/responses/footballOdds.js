@@ -1,6 +1,7 @@
 const config = require("../config");
 const bot = require("../bot");
 const axios = require('axios');
+const nodemailer = require('nodemailer');
 
 function trigger(msg) {
   return /@odds/i.test(msg.text);
@@ -94,7 +95,8 @@ async function respond(msg) {
                 
                                 msgToSend += 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
                                 msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
-                                msgToSend += finalPct;
+                                msgToSend += '\n';
+                                msgToSend += '*Odds are from FanDuel';
                             }
                         });
                     }
@@ -138,7 +140,8 @@ async function respond(msg) {
 
                                 msgToSend += 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
                                 msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')\n';
-                                msgToSend += finalPct;
+                                msgToSend += '\n';
+                                msgToSend += '*Odds are from FanDuel';
                             }
                         });
                     }
@@ -185,7 +188,8 @@ async function respond(msg) {
                 
                                 msgToSend += 'Away: ' + result.away_team + '  ' + awayLine + ' (' + awayPrice + ')\n';
                                 msgToSend += 'Home: ' + result.home_team + '  ' + homeLine + ' (' + homePrice + ')\n';
-                                msgToSend += finalPct;
+                                msgToSend += '\n';
+                                msgToSend += '*Odds are from FanDuel';
                             }
                         });
                     }
@@ -201,6 +205,30 @@ async function respond(msg) {
                 bot.postMsg(msgToSend);
             }, 1000);
 
+            if (finalPct > 21) {
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: config.GMAIL_USER,
+                      pass: config.GMAIL_PASS
+                    }
+                });
+                  
+                var mailOptions = {
+                    from: config.GMAIL_USER,
+                    to: config.GMAIL_USER,
+                    subject: 'Sending Email using Node.js',
+                    text: 'That was easy!'
+                };
+                  
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+            }
         })
         .catch(error => {
             console.log('Error', error)
