@@ -11,7 +11,7 @@ exports.TEST = false;
 exports.USER_LIKE = { id: "user id", name: "user name" };
 exports.USER_ADD = { id: "25143759", name: "YEAR OF THE BROWNS" };
 
-exports.ODDS_API_KEY = "3aa116464a2900b6118aa76a71a30750";
+//exports.ODDS_API_KEY = "3aa116464a2900b6118aa76a71a30750";
 
 exports.GMAIL_USER = "nshurtleff15@gmail.com";
 exports.GMAIL_PASS = "ltfqjraoghedvgjd";

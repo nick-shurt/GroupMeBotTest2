@@ -41,7 +41,7 @@ async function respond(msg) {
     
     console.log('MSG: ' + input_team);
 
-    const apiKey =  config.ODDS_API_KEY;
+    const apiKey =  process.env.ODDS_API_KEY;
     const sportKey = 'americanfootball_nfl' // use the sport_key from the /sports endpoint below, or use 'upcoming' to see the next 8 games across all sports
     const regions = 'us' // uk | us | eu | au. Multiple can be specified if comma delimited
     const markets = getMarket(lowerInput); // h2h | spreads | totals. Multiple can be specified if comma delimited
@@ -217,8 +217,8 @@ async function respond(msg) {
                 var mailOptions = {
                     from: config.GMAIL_USER,
                     to: config.GMAIL_USER,
-                    subject: 'Sending Email using Node.js',
-                    text: 'That was easy!'
+                    subject: 'OddsAPI Request Limit Over 95%',
+                    text: 'Your OddsAPI account has almost reached its monthly api call limit. Current usage: ' + finalPct + '%'
                 };
                   
                 transporter.sendMail(mailOptions, function(error, info){
