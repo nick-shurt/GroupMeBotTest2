@@ -14,6 +14,82 @@ async function respond(msg) {
     let msgToSend = '';
     var input_team;
 
+    const nfl_teams = ['Cardinals',
+                    'Falcons',
+                    'Ravens',
+                    'Bills',
+                    'Panthers',
+                    'Bears',
+                    'Bengals',
+                    'Browns',
+                    'Cowboys',
+                    'Broncos',
+                    'Lions',
+                    'Packers',
+                    'Texans',
+                    'Colts',
+                    'Jaguars',
+                    'Chiefs',
+                    'Dolphins',
+                    'Vikings',
+                    'Patriots',
+                    'Saints',
+                    'Giants',
+                    'Jets',
+                    'Raiders',
+                    'Eagles',
+                    'Steelers',
+                    'Chargers',
+                    '49ers',
+                    'Seahawks',
+                    'Rams',
+                    'Buccaneers',
+                    'Titans',
+                    'Commanders'
+                    ];
+
+    const nba_teams = ['Celtics',
+                    'Nets',
+                    'Knicks',
+                    '76ers',
+                    'Raptors',
+                    'Warriors',
+                    'Clippers',
+                    'Lakers',
+                    'Suns',
+                    'Kings',
+                    'Bulls',
+                    'Cavaliers',
+                    'Pistons',
+                    'Pacers',
+                    'Bucks',
+                    'Mavericks',
+                    'Rockets',
+                    'Grizzlies',
+                    'Hornets',
+                    'Spurs',
+                    'Hawks',
+                    'Pelicans',
+                    'Heat',
+                    'Magic',
+                    'Wizards',
+                    'Nuggets',
+                    'Timberwolves',
+                    'Thunder',
+                    'Trail Blazers',
+                    'Jazz'
+                    ];
+
+    const getSport = (str) => {
+        var sport = 'upcoming';
+        if (nfl_teams.contains(str)) {
+            sport = 'americanfootball_nfl';
+        }
+        if (nba_teams.contains(str)) {
+            sport = 'basketball_nba';
+        }
+    }
+
     const getMarket = (str) => {
         var returnStr = 'not found';
         if (str.includes('o/u') || str.includes('over/under') ) {
@@ -42,7 +118,7 @@ async function respond(msg) {
     console.log('MSG: ' + input_team);
 
     const apiKey =  process.env.ODDS_API_KEY;
-    const sportKey = 'americanfootball_nfl' // use the sport_key from the /sports endpoint below, or use 'upcoming' to see the next 8 games across all sports
+    const sportKey = getSport(input_team); // use the sport_key from the /sports endpoint below, or use 'upcoming' to see the next 8 games across all sports
     const regions = 'us' // uk | us | eu | au. Multiple can be specified if comma delimited
     const markets = getMarket(lowerInput); // h2h | spreads | totals. Multiple can be specified if comma delimited
     const oddsFormat = 'american' // decimal | american
