@@ -150,6 +150,8 @@ async function respond(msg) {
                     var awayTeam = result.away_team.toLowerCase();
                     var awayPrice;
                     console.log('DID WE GET HERE 1');
+                    console.log('HT: ' + homeTeam);
+                    console.log('AT: ' + awayTeam);
                     if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
                         console.log('DID WE GET HERE 2');
                         found = true;
