@@ -82,10 +82,10 @@ async function respond(msg) {
 
     const getSport = (str) => {
         var sport = 'upcoming';
-        if (nfl_teams.contains(str)) {
+        if (nfl_teams.includes(str)) {
             sport = 'americanfootball_nfl';
         }
-        if (nba_teams.contains(str)) {
+        if (nba_teams.includes(str)) {
             sport = 'basketball_nba';
         }
     }
