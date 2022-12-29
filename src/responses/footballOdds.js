@@ -14,70 +14,70 @@ async function respond(msg) {
     let msgToSend = 'No odds found for given input';
     var input_team;
 
-    const nfl_teams = ['Cardinals',
-                    'Falcons',
-                    'Ravens',
-                    'Bills',
-                    'Panthers',
-                    'Bears',
-                    'Bengals',
-                    'Browns',
-                    'Cowboys',
-                    'Broncos',
-                    'Lions',
-                    'Packers',
-                    'Texans',
-                    'Colts',
-                    'Jaguars',
-                    'Chiefs',
-                    'Dolphins',
-                    'Vikings',
-                    'Patriots',
-                    'Saints',
-                    'Giants',
-                    'Jets',
-                    'Raiders',
-                    'Eagles',
-                    'Steelers',
-                    'Chargers',
+    const nfl_teams = ['cardinals',
+                    'falcons',
+                    'ravens',
+                    'bills',
+                    'panthers',
+                    'bears',
+                    'bengals',
+                    'browns',
+                    'cowboys',
+                    'broncos',
+                    'lions',
+                    'packers',
+                    'texans',
+                    'colts',
+                    'jaguars',
+                    'chiefs',
+                    'dolphins',
+                    'vikings',
+                    'patriots',
+                    'saints',
+                    'giants',
+                    'jets',
+                    'raiders',
+                    'eagles',
+                    'steelers',
+                    'chargers',
                     '49ers',
-                    'Seahawks',
-                    'Rams',
-                    'Buccaneers',
-                    'Titans',
-                    'Commanders'
+                    'seahawks',
+                    'rams',
+                    'buccaneers',
+                    'titans',
+                    'commanders'
                     ];
 
-    const nba_teams = ['Celtics',
-                    'Nets',
-                    'Knicks',
+    const nba_teams = ['celtics',
+                    'nets',
+                    'knicks',
                     '76ers',
-                    'Raptors',
-                    'Warriors',
-                    'Clippers',
-                    'Lakers',
-                    'Suns',
-                    'Kings',
-                    'Bulls',
-                    'Cavaliers',
-                    'Pistons',
-                    'Pacers',
-                    'Bucks',
-                    'Mavericks',
-                    'Rockets',
-                    'Grizzlies',
-                    'Hornets',
-                    'Spurs',
-                    'Hawks',
-                    'Pelicans',
-                    'Heat',
-                    'Magic',
-                    'Wizards',
-                    'Nuggets',
-                    'Timberwolves',
-                    'Thunder',
-                    'Trail Blazers',
-                    'Jazz'
+                    'raptors',
+                    'warriors',
+                    'clippers',
+                    'lakers',
+                    'suns',
+                    'kings',
+                    'bulls',
+                    'cavaliers',
+                    'pistons',
+                    'pacers',
+                    'pucks',
+                    'mavericks',
+                    'rockets',
+                    'grizzlies',
+                    'hornets',
+                    'spurs',
+                    'hawks',
+                    'pelicans',
+                    'heat',
+                    'magic',
+                    'wizards',
+                    'nuggets',
+                    'timberwolves',
+                    'thunder',
+                    'trail Blazers',
+                    'jazz'
                     ];
 
     const getSport = (str) => {
@@ -149,37 +149,28 @@ async function respond(msg) {
                     var homePrice;
                     var awayTeam = result.away_team.toLowerCase();
                     var awayPrice;
-                    console.log('DID WE GET HERE 1');
-                    console.log('HT: ' + homeTeam);
-                    console.log('AT: ' + awayTeam);
+                    
                     if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
-                        console.log('DID WE GET HERE 2');
                         found = true;
                         result.bookmakers.forEach((book) => {
-                            console.log('DID WE GET HERE 3');
                             if (book.key === 'fanduel') {
-                                console.log('DID WE GET HERE 4');
                                 if (book.markets[0].outcomes[0].name === result.home_team) {
-                                    console.log('DID WE GET HERE 5');
                                     homePrice = book.markets[0].outcomes[0].price;
                                     homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
                                 } else {
-                                    console.log('DID WE GET HERE 5');
                                     awayPrice = book.markets[0].outcomes[0].price;
                                     awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
                                 }
                 
                                 if (book.markets[0].outcomes[1].name === result.home_team) {
-                                    console.log('DID WE GET HERE 6');
                                     homePrice = book.markets[0].outcomes[1].price;
                                     homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
                                 } else {
-                                    console.log('DID WE GET HERE 6');
                                     awayPrice = book.markets[0].outcomes[1].price;
                                     awayPrice = (/^\d/.test(awayPrice)) ? '+' + awayPrice : awayPrice;
                                 }
                 
-                                msgToSend += 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
+                                msgToSend = 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
                                 msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
                                 msgToSend += '\n';
                                 msgToSend += '*Odds are from FanDuel';
@@ -224,7 +215,7 @@ async function respond(msg) {
                                     homeToEdit = space(homeToEdit, awayToEdit.length - homeToEdit.length);
                                 }
 
-                                msgToSend += 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
+                                msgToSend = 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
                                 msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')\n';
                                 msgToSend += '\n';
                                 msgToSend += '*Odds are from FanDuel';
@@ -272,7 +263,7 @@ async function respond(msg) {
                                     awayLine = (/^\d/.test(awayLine)) ? '+' + awayLine : awayLine;
                                 }
                 
-                                msgToSend += 'Away: ' + result.away_team + '  ' + awayLine + ' (' + awayPrice + ')\n';
+                                msgToSend = 'Away: ' + result.away_team + '  ' + awayLine + ' (' + awayPrice + ')\n';
                                 msgToSend += 'Home: ' + result.home_team + '  ' + homeLine + ' (' + homePrice + ')\n';
                                 msgToSend += '\n';
                                 msgToSend += '*Odds are from FanDuel';
