@@ -14,78 +14,12 @@ async function respond(msg) {
     let msgToSend = 'No odds found for given input';
     var input_team;
 
-    const nfl_teams = ['cardinals',
-                    'falcons',
-                    'ravens',
-                    'bills',
-                    'panthers',
-                    'bears',
-                    'bengals',
-                    'browns',
-                    'cowboys',
-                    'broncos',
-                    'lions',
-                    'packers',
-                    'texans',
-                    'colts',
-                    'jaguars',
-                    'chiefs',
-                    'dolphins',
-                    'vikings',
-                    'patriots',
-                    'saints',
-                    'giants',
-                    'jets',
-                    'raiders',
-                    'eagles',
-                    'steelers',
-                    'chargers',
-                    '49ers',
-                    'seahawks',
-                    'rams',
-                    'buccaneers',
-                    'titans',
-                    'commanders'
-                    ];
-
-    const nba_teams = ['celtics',
-                    'nets',
-                    'knicks',
-                    '76ers',
-                    'raptors',
-                    'warriors',
-                    'clippers',
-                    'lakers',
-                    'suns',
-                    'kings',
-                    'bulls',
-                    'cavaliers',
-                    'pistons',
-                    'pacers',
-                    'pucks',
-                    'mavericks',
-                    'rockets',
-                    'grizzlies',
-                    'hornets',
-                    'spurs',
-                    'hawks',
-                    'pelicans',
-                    'heat',
-                    'magic',
-                    'wizards',
-                    'nuggets',
-                    'timberwolves',
-                    'thunder',
-                    'trail Blazers',
-                    'jazz'
-                    ];
-
     const getSport = (str) => {
         var sport = 'upcoming';
-        if (nfl_teams.includes(str)) {
+        if (config.NFL_TEAMS.includes(str) || config.ABBREV_NFL_TEAMS.hasOwnProperty(str)) {
             sport = 'americanfootball_nfl';
         }
-        if (nba_teams.includes(str)) {
+        if (config.NBA_TEAMS.includes(str) || config.ABBREV_NBA_TEAMS.hasOwnProperty(str)) {
             sport = 'basketball_nba';
         }
         return sport;
@@ -114,6 +48,13 @@ async function respond(msg) {
         input_team = input_split[0]; 
     } else {
         input_team = input_split[1];
+    }
+
+    if (config.ABBREV_NFL_TEAMS.hasOwnProperty(input_team)) {
+        input_team = config.ABBREV_NFL_TEAMS[input_team];
+    }
+    if (config.ABBREV_NBA_TEAMS.hasOwnProperty(input_team)) {
+        input_team = config.ABBREV_NBA_TEAMS[input_team];
     }
     
     console.log('MSG: ' + input_team);
