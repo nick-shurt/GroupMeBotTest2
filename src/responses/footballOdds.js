@@ -88,6 +88,7 @@ async function respond(msg) {
         if (nba_teams.includes(str)) {
             sport = 'basketball_nba';
         }
+        return sport;
     }
 
     const getMarket = (str) => {
