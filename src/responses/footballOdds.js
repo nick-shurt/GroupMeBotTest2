@@ -19,6 +19,10 @@ async function respond(msg) {
             }
             msgToSend += config.SPORTSBOOKS[x];
         }
+
+        setTimeout(function() {
+            bot.postMsg(msgToSend);
+        }, 1000);
     } else {
         var sportsbook;
         if (lowerInput.includes("#")) {
