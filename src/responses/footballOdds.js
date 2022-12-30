@@ -131,7 +131,7 @@ async function respond(msg) {
                                     msgToSend = 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
                                     msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
                                     msgToSend += '\n';
-                                    msgToSend += '*Odds are from ' + book.title + ' sportsbook';
+                                    msgToSend += '*Odds are from ' + book.title;
                                 }
                             });
                         }
@@ -176,7 +176,7 @@ async function respond(msg) {
                                     msgToSend = 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
                                     msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')\n';
                                     msgToSend += '\n';
-                                    msgToSend += '*Odds are from ' + book.title + ' sportsbook';
+                                    msgToSend += '*Odds are from ' + book.title;
                                 }
                             });
                         }
@@ -224,7 +224,7 @@ async function respond(msg) {
                                     msgToSend = 'Away: ' + result.away_team + '  ' + awayLine + ' (' + awayPrice + ')\n';
                                     msgToSend += 'Home: ' + result.home_team + '  ' + homeLine + ' (' + homePrice + ')\n';
                                     msgToSend += '\n';
-                                    msgToSend += '*Odds are from ' + book.title + ' sportsbook';
+                                    msgToSend += '*Odds are from ' + book.title;
                                 }
                             });
                         }
@@ -240,7 +240,7 @@ async function respond(msg) {
                     bot.postMsg(msgToSend);
                 }, 1000);
 
-                if (finalPct > 21) {
+                if (finalPct > 95) {
                     var transporter = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
