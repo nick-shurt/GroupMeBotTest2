@@ -95,3 +95,10 @@ exports.ABBREV_NBA_TEAMS = {'cavs' : 'cavaliers',
                             'clips' : 'clippers',
                             'raps' : 'raptors',
                             'pels' : 'pelicans'};
+
+exports.SPORTSBOOKS = {'fanduel' : 'fanduel',
+                    'draftkings' : 'draftkings',
+                    'betmgm' : 'betmgm',
+                    'pointsbet' : 'pointsbetus',
+                    'betrivers' : 'betrivers',
+                    'barstool' : 'barstool'};
