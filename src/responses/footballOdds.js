@@ -20,12 +20,12 @@ async function respond(msg) {
             msgToSend += config.SPORTSBOOKS[x];
         }
     } else {
-        var book;
+        var sportsbook;
         if (lowerInput.includes("#")) {
-            book = config.SPORTSBOOKS[lowerInput.split("#")[1].trim()];
+            sportsbook = config.SPORTSBOOKS[lowerInput.split("#")[1].trim()];
             lowerInput = lowerInput.split("#")[0].trim();
         } else {
-            book = 'fanduel';
+            sportsbook = 'fanduel';
         }
         let input_split = lowerInput.split(" ");
         let msgToSend = 'No odds found for given input';
@@ -111,7 +111,7 @@ async function respond(msg) {
                         if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
                             found = true;
                             result.bookmakers.forEach((book) => {
-                                if (book.key === book) {
+                                if (book.key === sportsbook) {
                                     if (book.markets[0].outcomes[0].name === result.home_team) {
                                         homePrice = book.markets[0].outcomes[0].price;
                                         homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
@@ -131,7 +131,7 @@ async function respond(msg) {
                                     msgToSend = 'Away: ' + result.away_team + ' (' + awayPrice + ')\n';
                                     msgToSend += 'Home: ' + result.home_team + ' (' + homePrice + ')\n';
                                     msgToSend += '\n';
-                                    msgToSend += '*Odds are from ' + book + ' sportsbook';
+                                    msgToSend += '*Odds are from ' + book.title + ' sportsbook';
                                 }
                             });
                         }
@@ -150,7 +150,7 @@ async function respond(msg) {
                         if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
                             found = true;
                             result.bookmakers.forEach((book) => {
-                                if (book.key === book) {
+                                if (book.key === sportsbook) {
                                     o_uNum = book.markets[0].outcomes[0].point;
                                     if (book.markets[0].outcomes[0].name === 'Over') {
                                         overOdds = book.markets[0].outcomes[0].price;
@@ -176,7 +176,7 @@ async function respond(msg) {
                                     msgToSend = 'Away: ' + awayToEdit + '     o' + o_uNum + ' (' + overOdds + ')\n';
                                     msgToSend += 'Home: ' + homeToEdit + '     u' + o_uNum + ' (' + underOdds + ')\n';
                                     msgToSend += '\n';
-                                    msgToSend += '*Odds are from ' + book + ' sportsbook';
+                                    msgToSend += '*Odds are from ' + book.title + ' sportsbook';
                                 }
                             });
                         }
@@ -196,7 +196,7 @@ async function respond(msg) {
                         if ((homeTeam.includes(input_team.toLowerCase()) || awayTeam.includes(input_team.toLowerCase())) && !found) {
                             found = true;
                             result.bookmakers.forEach((book) => {
-                                if (book.key === book) {
+                                if (book.key === sportsbook) {
                                     if (book.markets[0].outcomes[0].name === result.home_team) {
                                         homePrice = book.markets[0].outcomes[0].price;
                                         homePrice = (/^\d/.test(homePrice)) ? '+' + homePrice : homePrice;
@@ -224,7 +224,7 @@ async function respond(msg) {
                                     msgToSend = 'Away: ' + result.away_team + '  ' + awayLine + ' (' + awayPrice + ')\n';
                                     msgToSend += 'Home: ' + result.home_team + '  ' + homeLine + ' (' + homePrice + ')\n';
                                     msgToSend += '\n';
-                                    msgToSend += '*Odds are from ' + book + ' sportsbook';
+                                    msgToSend += '*Odds are from ' + book.title + ' sportsbook';
                                 }
                             });
                         }
