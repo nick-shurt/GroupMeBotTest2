@@ -52,7 +52,7 @@ async function respond(msg) {
         }
 
         const team = rows2[0];
-
+        console.log('Team', team);
         // Step 2: Find which columns contain driverA and driverB
         let columnA = null, columnB = null;
         for (const [column, value] of Object.entries(team)) {
