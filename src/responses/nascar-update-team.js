@@ -8,10 +8,6 @@ function trigger(msg) {
 }
 
 async function respond(msg) {
-  try {
-    let message = '';
-    let input = msg.text.replace(/.*@nascar_update/i, "").trim();
-
     const connection = await mysql.createConnection({
         host: 'localhost',
         user: config.DATABASE_USER,
@@ -19,29 +15,33 @@ async function respond(msg) {
         database: config.DATABASE_NAME
     });
 
-    const { teamName, driver3, driver4, week } = parseTeamString(input);
+    try {
+        let message = '';
+        let input = msg.text.replace(/.*@nascar_update/i, "").trim();
 
-    const [result] = await connection.execute(
-        "UPDATE `teams_2025` SET `driver3` = ?, `driver4` = ? WHERE `teams_2025`.`team_name` = ? AND `teams_2025`.`week` = ?",
-        [driver3, driver4, teamName, week]
-    );
+        const { teamName, driver3, driver4, week } = parseTeamString(input);
 
-    if (result.affectedRows === 0) {
-        message = 'No rows updated. Input may be incorrect.';
+        const [result] = await connection.execute(
+            "UPDATE `teams_2025` SET `driver3` = ?, `driver4` = ? WHERE `teams_2025`.`team_name` = ? AND `teams_2025`.`week` = ?",
+            [driver3, driver4, teamName, week]
+        );
+
+        if (result.affectedRows === 0) {
+            message = 'No rows updated. Input may be incorrect.';
+        }
+
+        console.log('Update successful');
+        message = 'Team Updated Successfully.';
+
+        setTimeout(function() {
+            bot.postMsg(message);
+        }, 1000);
+    } catch (err) {
+        console.error('Database error:', err);
+        return { success: false, message: 'Database error' };
+    } finally {
+        await connection.end();
     }
-
-    console.log('Update successful');
-    message = 'Team Updated Successfully.';
-
-    setTimeout(function() {
-        bot.postMsg(message);
-    }, 1000);
-  } catch (err) {
-    console.error('Database error:', err);
-    return { success: false, message: 'Database error' };
-  } finally {
-    await connection.end();
-  }
 }
 
 function parseTeamString(input) {
