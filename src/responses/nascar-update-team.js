@@ -16,6 +16,7 @@ async function respond(msg) {
     });
 
     try {
+        console.log('Full Message', msg);
         let message = '';
         let input = msg.text.replace(/.*@/i, "").trim();
 
