@@ -4,7 +4,7 @@ const rp = require("request-promise");
 const mysql = require('mysql2/promise');
 
 function trigger(msg) {
-    return /@nascar_update/i.test(msg.text);
+    return /@sub/i.test(msg.text);
 }
 
 async function respond(msg) {
@@ -17,7 +17,10 @@ async function respond(msg) {
 
     try {
         let message = '';
-        let input = msg.text.replace(/.*@nascar_update/i, "").trim();
+        let input = msg.text.replace(/.*@/i, "").trim();
+
+        //testing only
+        let teamName = 'Team Steve';
 
         const [rows] = await connection.execute(
             'SELECT name, date, number FROM `races_2025` WHERE `closed` = 0 LIMIT 1'
@@ -28,14 +31,51 @@ async function respond(msg) {
         console.log('Name:', name);
         console.log('Date:', date);
         console.log('Number:', number);
+        let teamWeek = number;
 
-        const { teamName, driver1, driver2, week } = parseTeamString(input);
-        console.log('Team Name: ' + teamName);
-        console.log('driver3: ' + driver1);
-        console.log('driver4: ' + driver2);
-        console.log('week: ' + week);
+        const driverNames = parseSwitchRequest(inputStatement);
+        if (!driverNames) {
+            console.log("Invalid input format.");
+            message = "Invalid input. Please check message and try again";
+        }
 
-        const [result] = await connection.execute(
+        const [driverA, driverB] = driverNames.map(name => name.toLowerCase());
+
+       const [rows2] = await connection.execute(
+            'SELECT team_name, driver1, driver2, driver3, driver4, week FROM teams_2025 WHERE team_name = ? AND week = ?',
+            [teamName, teamWeek]
+        );
+
+        if (rows2.length === 0) {
+            console.log('Team not found.');
+            message = 'Team not matched in the database';
+        }
+
+        const team = rows2[0];
+
+        // Step 2: Find which columns contain driverA and driverB
+        let columnA = null, columnB = null;
+        for (const [column, value] of Object.entries(team)) {
+            if (value && value.toLowerCase() === driverA) columnA = column;
+            if (value && value.toLowerCase() === driverB) columnB = column;
+        }
+
+        if (!columnA || !columnB) {
+            console.log('One or both drivers not found on this team.');
+            message = 'One or both drivers not found on this team.';
+        }
+
+        // Step 3: Swap them in the database
+        const sql = `UPDATE teams_2025 SET ${columnA} = ?, ${columnB} = ? WHERE team_name = ? AND week = ?`;
+
+        await connection.execute(sql, [team[`${columnB}`], team[`${columnA}`], teamName, teamWeek]);
+
+        console.log(`✅ Switched "${driverA}" and "${driverB}" successfully.`);
+        message = `✅ Subbed "${driverA}" with "${driverB}" successfully.`;
+
+
+
+        /*const [result] = await connection.execute(
             "UPDATE `teams_2025` SET `driver3` = ?, `driver4` = ? WHERE `teams_2025`.`team_name` = ? AND `teams_2025`.`week` = ?",
             [driver1, driver2, teamName, week]
         );
@@ -45,7 +85,7 @@ async function respond(msg) {
         }
 
         console.log('Update successful');
-        message = 'Team Updated Successfully.';
+        message = 'Team Updated Successfully.';*/
 
         setTimeout(function() {
             bot.postMsg(message);
@@ -58,11 +98,18 @@ async function respond(msg) {
     }
 }
 
-function parseTeamString(input) {
-    const parts = input.split(',').map(p => p.trim());
-    const [teamName, driver1, driver2, week] = parts;
-    return { teamName, driver1, driver2, week };
+function parseSwitchRequest(input) {
+  const lower = input.toLowerCase().trim();
+  const match = lower.match(/(?:sub|switch)\s+([\w\s]+?)\s+(?:for|with|and)\s+([\w\s]+)/i);
+
+  if (!match) return null;
+
+  const nameA = match[1].trim();
+  const nameB = match[2].trim();
+
+  return [nameA, nameB];
 }
+
 
 exports.trigger = trigger;
 exports.respond = respond;
