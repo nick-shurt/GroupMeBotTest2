@@ -20,6 +20,10 @@ async function respond(msg) {
         let input = msg.text.replace(/.*@nascar_update/i, "").trim();
 
         const { teamName, driver3, driver4, week } = parseTeamString(input);
+        console.log('Team Name: ' + teamName);
+        console.log('driver3: ' + driver3);
+        console.log('driver4: ' + driver4);
+        console.log('week: ' + week);
 
         const [result] = await connection.execute(
             "UPDATE `teams_2025` SET `driver3` = ?, `driver4` = ? WHERE `teams_2025`.`team_name` = ? AND `teams_2025`.`week` = ?",
