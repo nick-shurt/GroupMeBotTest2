@@ -41,7 +41,7 @@ async function respond(msg) {
 
         const [driverA, driverB] = driverNames.map(name => name.toLowerCase());
 
-       const [rows2] = await connection.execute(
+        const [rows2] = await connection.execute(
             'SELECT driver1, driver2, driver3, driver4 FROM teams_2025 WHERE team_name = ? AND week = ?',
             [teamName, teamWeek]
         );
@@ -52,8 +52,7 @@ async function respond(msg) {
         }
 
         const team = rows2[0];
-        console.log('Team', team);
-        // Step 2: Find which columns contain driverA and driverB
+
         let columnA = null, columnB = null;
         for (const [column, value] of Object.entries(team)) {
             if (value && value.toLowerCase() === driverA) columnA = column;
@@ -65,31 +64,13 @@ async function respond(msg) {
             message = 'One or both drivers not found on this team.';
         }
 
-        // Step 3: Swap them in the database
         const sql = `UPDATE teams_2025 SET ${columnA} = ?, ${columnB} = ? WHERE team_name = ? AND week = ?`;
-
         await connection.execute(sql, [team[`${columnB}`], team[`${columnA}`], teamName, teamWeek]);
 
         console.log(`✅ Switched "${driverA}" and "${driverB}" successfully.`);
-        message = `✅ Subbed "${driverA}" with "${driverB}" successfully.`;
+        message = '✅  Substitution made successfully.';
 
-
-
-        /*const [result] = await connection.execute(
-            "UPDATE `teams_2025` SET `driver3` = ?, `driver4` = ? WHERE `teams_2025`.`team_name` = ? AND `teams_2025`.`week` = ?",
-            [driver1, driver2, teamName, week]
-        );
-
-        if (result.affectedRows === 0) {
-            message = 'No rows updated. Input may be incorrect.';
-        }
-
-        console.log('Update successful');
-        message = 'Team Updated Successfully.';*/
-
-        setTimeout(function() {
-            bot.postMsg(message);
-        }, 1000);
+        bot.postMsg(message);
     } catch (err) {
         console.error('Database error:', err);
         return { success: false, message: 'Database error' };
