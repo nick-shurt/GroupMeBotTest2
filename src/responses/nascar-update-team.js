@@ -33,7 +33,7 @@ async function respond(msg) {
         console.log('Number:', number);
         let teamWeek = number;
 
-        const driverNames = parseSwitchRequest(inputStatement);
+        const driverNames = parseSwitchRequest(input);
         if (!driverNames) {
             console.log("Invalid input format.");
             message = "Invalid input. Please check message and try again";
