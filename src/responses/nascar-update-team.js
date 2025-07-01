@@ -19,15 +19,15 @@ async function respond(msg) {
         let message = '';
         let input = msg.text.replace(/.*@nascar_update/i, "").trim();
 
-        const { teamName, driver3, driver4, week } = parseTeamString(input);
+        const { teamName, driver1, driver2, week } = parseTeamString(input);
         console.log('Team Name: ' + teamName);
-        console.log('driver3: ' + driver3);
-        console.log('driver4: ' + driver4);
+        console.log('driver3: ' + driver1);
+        console.log('driver4: ' + driver2);
         console.log('week: ' + week);
 
         const [result] = await connection.execute(
             "UPDATE `teams_2025` SET `driver3` = ?, `driver4` = ? WHERE `teams_2025`.`team_name` = ? AND `teams_2025`.`week` = ?",
-            [driver3, driver4, teamName, week]
+            [driver1, driver2, teamName, week]
         );
 
         if (result.affectedRows === 0) {
