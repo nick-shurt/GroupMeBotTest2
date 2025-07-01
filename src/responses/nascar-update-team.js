@@ -42,7 +42,7 @@ async function respond(msg) {
         const [driverA, driverB] = driverNames.map(name => name.toLowerCase());
 
        const [rows2] = await connection.execute(
-            'SELECT team_name, driver1, driver2, driver3, driver4, week FROM teams_2025 WHERE team_name = ? AND week = ?',
+            'SELECT driver1, driver2, driver3, driver4 FROM teams_2025 WHERE team_name = ? AND week = ?',
             [teamName, teamWeek]
         );
 
