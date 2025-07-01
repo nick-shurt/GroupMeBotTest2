@@ -19,6 +19,16 @@ async function respond(msg) {
         let message = '';
         let input = msg.text.replace(/.*@nascar_update/i, "").trim();
 
+        const [rows] = await connection.execute(
+            'SELECT name, date, number FROM `races_2025` WHERE `closed` = 0 LIMIT 1'
+        );
+
+        const { name, date, number } = rows[0];
+
+        console.log('Name:', name);
+        console.log('Date:', date);
+        console.log('Number:', number);
+
         const { teamName, driver1, driver2, week } = parseTeamString(input);
         console.log('Team Name: ' + teamName);
         console.log('driver3: ' + driver1);
