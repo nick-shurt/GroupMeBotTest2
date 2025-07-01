@@ -3,6 +3,7 @@ exports.BOT_ID = "a651cda2d1ecdb3959608b8a01";
 exports.GROUP_ID = "48392578";
 exports.GIHPY_KEY = "3cNm0IxmL2htInLe6AUQBfUQ7tbYU0IC";
 exports.ACCESS_TOKEN_2 = "4LffyUZhNDfb3iGQAea0Mu1EvhYaFajTH5PYdqLj";
+exports.DATABASE_HOST = '195.35.53.21';
 exports.DATABASE_NAME = 'u293996675_zeba';
 exports.DATABASE_USER = 'u293996675_zeba';
 exports.DATABASE_PASS = 'Dariusgarland1!';

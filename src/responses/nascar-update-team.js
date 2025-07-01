@@ -9,7 +9,7 @@ function trigger(msg) {
 
 async function respond(msg) {
     const connection = await mysql.createConnection({
-        host: 'localhost',
+        host: config.DATABASE_HOST,
         user: config.DATABASE_USER,
         password: config.DATABASE_PASS,
         database: config.DATABASE_NAME
