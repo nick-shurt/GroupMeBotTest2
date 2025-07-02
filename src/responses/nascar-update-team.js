@@ -19,6 +19,10 @@ async function respond(msg) {
         console.log('Full Message', msg);
         let message = '';
         let update = true;
+        let teamFound = false;
+        let driversValid = false;
+        const [driverA, driverB] = [];
+        const team = {};
         let input = msg.text.replace(/.*@/i, "").trim();
 
         //get team name of requestor
@@ -28,27 +32,22 @@ async function respond(msg) {
         const [rows] = await connection.execute(
             'SELECT name, date, number FROM `races_2025` WHERE `closed` = 0 LIMIT 1'
         );
-
         const { name, date, number } = rows[0];
-
-        console.log('Name:', name);
-        console.log('Date:', date);
-        console.log('Number:', number);
 
         //if user specified week in message, get week number and set team week; if not specified, use current week
         const weekNumber = getWeekNumber(input);
         let teamWeek = (weekNumber) ? weekNumber : number;
 
-        // extract driver names from string; if unable, input is incorrect, send message, no udpate
+        // extract driver names from string; if unable, input is incorrect, send message, no udpate; else map to variables
         const driverNames = parseSwitchRequest(input);
         if (!driverNames) {
             console.log("Invalid input format.");
             message = "Invalid input. Please check message and try again";
             update = false;
+        } else {
+            [driverA, driverB] = driverNames.map(name => name.toLowerCase());
+            driversValid = true;
         }
-
-        //map names to variables
-        const [driverA, driverB] = driverNames.map(name => name.toLowerCase());
 
         //get team based on user and week
         const [rows2] = await connection.execute(
@@ -56,30 +55,33 @@ async function respond(msg) {
             [teamName, teamWeek]
         );
 
-        // if team not found, send message and no update
+        // if team not found, send message and no update; if found, set to variable
         if (rows2.length === 0) {
             console.log('Team not found.');
             message = 'Team not matched in the database';
             update = false;
+        } else {
+            team = rows2[0];
+            teamFound = true;
         }
 
-        //if team is found, set in variable
-        const team = rows2[0];
+        if (driversValid && teamFound) {
+            //get the column names for the current column each driver is in
+            let columnA = null, columnB = null;
+            for (const [column, value] of Object.entries(team)) {
+                if (value && value.toLowerCase() === driverA) columnA = column;
+                if (value && value.toLowerCase() === driverB) columnB = column;
+            }
 
-        //get the column names for the current column each driver is in
-        let columnA = null, columnB = null;
-        for (const [column, value] of Object.entries(team)) {
-            if (value && value.toLowerCase() === driverA) columnA = column;
-            if (value && value.toLowerCase() === driverB) columnB = column;
+            // if either driver is not found on the current team, send not found message and no update
+            if (!columnA || !columnB) {
+                console.log('One or both drivers not found on this team');
+                message = 'One or both drivers not found on your team';
+                update = false;
+            }
         }
 
-        // if either driver is not found on the current team, send not found message and no update
-        if (!columnA || !columnB) {
-            console.log('One or both drivers not found on this team.');
-            message = 'One or both drivers not found on this team.';
-            update = false;
-        }
-
+        //if all checks pass, update
         if (update) {
             const sql = `UPDATE teams_2025 SET ${columnA} = ?, ${columnB} = ? WHERE team_name = ? AND week = ?`;
             await connection.execute(sql, [team[`${columnB}`], team[`${columnA}`], teamName, teamWeek]);
