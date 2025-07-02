@@ -1,7 +1,7 @@
 const config = require("../config");
 const bot = require("../bot");
-const rp = require("request-promise");
 const mysql = require('mysql2/promise');
+const Fuse = require('fuse.js');
 
 function trigger(msg) {
     return /@sub/i.test(msg.text);
@@ -40,13 +40,13 @@ async function respond(msg) {
         let teamWeek = (weekNumber) ? weekNumber : number;
 
         // extract driver names from string; if unable, input is incorrect, send message, no udpate; else map to variables
-        const driverNames = parseSwitchRequest(input);
-        if (!driverNames) {
+        const drivers = parseSwitchRequest(input);
+        if (!drivers) {
             console.log("Invalid input format.");
             message = "Invalid input. Please check message and try again";
             update = false;
         } else {
-            [driverA, driverB] = driverNames.map(name => name.toLowerCase());
+            [driverA, driverB] = drivers.map(name => name.toLowerCase());
             driversValid = true;
         }
 
@@ -67,17 +67,36 @@ async function respond(msg) {
         }
 
         if (driversValid && teamFound) {
-            //get the column names for the current column each driver is in
-            for (const [column, value] of Object.entries(team)) {
-                if (value && value.toLowerCase() === driverA) columnA = column;
-                if (value && value.toLowerCase() === driverB) columnB = column;
-            }
+            let bothFound = false;
 
-            // if either driver is not found on the current team, send not found message and no update
-            if (!columnA || !columnB) {
+            // Create a list of drivers from the row
+            const driverMap = Object.entries(team).filter(([key]) =>
+                key.startsWith('driver')
+            );
+
+            // Prepare values for fuzzy matching
+            const driverNames = driverMap.map(([_, val]) => val);
+
+            // Use Fuse.js to search
+            const fuse = new Fuse(driverNames, {
+                threshold: 0.3, // adjust as needed (lower = stricter match)
+            });
+
+            const resultA = fuse.search(driverA)[0];
+            const resultB = fuse.search(driverB)[0];
+
+            if (!resultA || !resultB) {
                 console.log('One or both drivers not found on this team');
                 message = 'One or both drivers not found on your team';
                 update = false;
+            } else {
+                bothFound = true;
+            }
+
+            if (bothFound) {
+                // Find columns where these matched names are stored
+                const columnA = driverMap.find(([_, val]) => val === resultA.item)?.[0];
+                const columnB = driverMap.find(([_, val]) => val === resultB.item)?.[0];
             }
         }
 
