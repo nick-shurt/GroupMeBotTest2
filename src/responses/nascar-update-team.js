@@ -20,8 +20,7 @@ async function respond(msg) {
         let message = '';
         let input = msg.text.replace(/.*@/i, "").trim();
 
-        //testing only
-        let teamName = 'Team Steve';
+        let teamName = getTeamName(msg.sender_id);
 
         const [rows] = await connection.execute(
             'SELECT name, date, number FROM `races_2025` WHERE `closed` = 0 LIMIT 1'
@@ -32,7 +31,9 @@ async function respond(msg) {
         console.log('Name:', name);
         console.log('Date:', date);
         console.log('Number:', number);
-        let teamWeek = number;
+
+        const weekNumber = getWeekNumber(input);
+        let teamWeek = (weekNumber) ? weekNumber : number;
 
         const driverNames = parseSwitchRequest(input);
         if (!driverNames) {
@@ -90,6 +91,28 @@ function parseSwitchRequest(input) {
   const nameB = match[2].trim();
 
   return [nameA, nameB];
+}
+
+function getTeamName(userId) {
+    const userTeamMap = {
+        "25143759": "Team Nick",
+        /*"": "Team Rachel",
+        "": "Team Matt",
+        "": "Team Jim",
+        "": "Team Jru",
+        "": "Team Chives",
+        "": "Team Donna",
+        "": "Team Mike",
+        "": "Team Steve",
+        "": "Team Joey"*/
+    };
+
+    return userTeamMap[userId] || null;
+}
+
+function getWeekNumber(str) {
+  const match = str.match(/\bweek\s+(\d+)\b/i);
+  return match ? parseInt(match[1], 10) : null;
 }
 
 
