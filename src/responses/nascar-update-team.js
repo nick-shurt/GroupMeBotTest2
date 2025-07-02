@@ -23,6 +23,7 @@ async function respond(msg) {
         let driversValid = false;
         var [driverA, driverB] = [];
         var team = {};
+        let columnA = null, columnB = null;
         let input = msg.text.replace(/.*@/i, "").trim();
 
         //get team name of requestor
@@ -67,7 +68,6 @@ async function respond(msg) {
 
         if (driversValid && teamFound) {
             //get the column names for the current column each driver is in
-            let columnA = null, columnB = null;
             for (const [column, value] of Object.entries(team)) {
                 if (value && value.toLowerCase() === driverA) columnA = column;
                 if (value && value.toLowerCase() === driverB) columnB = column;
