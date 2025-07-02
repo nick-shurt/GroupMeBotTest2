@@ -100,15 +100,16 @@ async function respond(msg) {
 }
 
 function parseSwitchRequest(input) {
-  const lower = input.toLowerCase().trim();
-  const match = lower.match(/(?:sub|switch)\s+([\w\s]+?)\s+(?:for|with|and)\s+([\w\s]+)/i);
+    const lower = input.toLowerCase().trim();
+    const cleaned = lower.replace(/\bweek\s+\d+\b$/, '').trim();
+    const match = cleaned.match(/(?:sub|switch)\s+([\w\s]+?)\s+(?:for|with|and)\s+([\w\s]+)/i);
 
-  if (!match) return null;
+    if (!match) return null;
 
-  const nameA = match[1].trim();
-  const nameB = match[2].trim();
+    const nameA = match[1].trim();
+    const nameB = match[2].trim();
 
-  return [nameA, nameB];
+    return [nameA, nameB];
 }
 
 function getTeamName(userId) {
