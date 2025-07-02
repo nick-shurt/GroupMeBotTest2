@@ -95,8 +95,8 @@ async function respond(msg) {
 
             if (bothFound) {
                 // Find columns where these matched names are stored
-                const columnA = driverMap.find(([_, val]) => val === resultA.item)?.[0];
-                const columnB = driverMap.find(([_, val]) => val === resultB.item)?.[0];
+                columnA = driverMap.find(([_, val]) => val === resultA.item)?.[0];
+                columnB = driverMap.find(([_, val]) => val === resultB.item)?.[0];
             }
         }
 
