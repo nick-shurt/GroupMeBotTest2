@@ -21,8 +21,8 @@ async function respond(msg) {
         let update = true;
         let teamFound = false;
         let driversValid = false;
-        const [driverA, driverB] = [];
-        const team = {};
+        var [driverA, driverB] = [];
+        var team = {};
         let input = msg.text.replace(/.*@/i, "").trim();
 
         //get team name of requestor
