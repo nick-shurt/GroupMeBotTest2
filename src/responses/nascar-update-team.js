@@ -62,6 +62,12 @@ async function respond(msg) {
             driversValid = true;
         }
 
+        if (validInput && teamWeek === number && !isSubBeforeRaceStart(date)) {
+            console.log("Race has started. Lineups are currently locked.");
+            message = "Race has started. Lineups are currently locked.";
+            validInput = false;
+        }
+
         if (validInput) {
             //get team based on user and week
             const [rows2] = await connection.execute(
@@ -139,8 +145,16 @@ function parseSwitchRequest(input) {
 
     if (!match) return null;
 
-    const nameA = match[1].trim();
-    const nameB = match[2].trim();
+    var nameA = match[1].trim();
+    var nameB = match[2].trim();
+
+    const map = {
+        svg: 'shane van gisbergen',
+        jhn: 'john h. nemechek'
+    };
+
+    nameA = map[nameA] || nameA;
+    nameB = map[nameB] || nameB;
 
     return [nameA, nameB];
 }
@@ -148,25 +162,31 @@ function parseSwitchRequest(input) {
 function getTeamName(userId) {
     const userTeamMap = {
         "25143759": "Team Nick",
-        /*"": "Team Rachel",
-        "": "Team Matt",
-        "": "Team Jim",
-        "": "Team Jru",
-        "": "Team Chives",
-        "": "Team Donna",
-        "": "Team Mike",
-        "": "Team Steve",
-        "": "Team Joey"*/
+        "112240973": "Team Rachel",
+        "32131344": "Team Matt",
+        "23131215": "Team Jim",
+        "18582070": "Team Jru",
+        "20405725": "Team Chives",
+        "55267854": "Team Donna",
+        "32131345": "Team Mike",
+        "14521823": "Team Steve",
+        "16189519": "Team Joey"
     };
 
     return userTeamMap[userId] || null;
 }
 
 function getWeekNumber(str) {
-  const match = str.match(/\bweek\s+(\d+)\b/i);
-  return match ? parseInt(match[1], 10) : null;
+    const match = str.match(/\bweek\s+(\d+)\b/i);
+    return match ? parseInt(match[1], 10) : null;
 }
 
+function isSubBeforeRaceStart(raceStartDateTime) {
+    const inputPlus30 = new Date(new Date(raceStartDateTime).getTime() + 30 * 60 * 1000);
+    const now = new Date();
+
+    return now < inputPlus30;
+}
 
 exports.trigger = trigger;
 exports.respond = respond;
