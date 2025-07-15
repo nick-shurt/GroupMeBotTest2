@@ -4,6 +4,8 @@ const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
 const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('chrome-aws-lambda');
 
 function trigger(msg) {
   return /@standings/i.test(msg.text);
@@ -25,17 +27,17 @@ async function respond(msg) {
 
 async function captureStandings(url, outputPath = 'standings.png') {
   const browser = await puppeteer.launch({
-    headless: 'new', // or false if debugging
-    args: ['--no-sandbox']
+    executablePath: await chromium.executablePath,
+    args: chromium.args,
+    headless: chromium.headless,
+    defaultViewport: chromium.defaultViewport,
   });
 
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: 'networkidle0' });
 
   const element = await page.$('.standings');
-  if (!element) {
-    throw new Error('Could not find .standings element on the page');
-  }
+  if (!element) throw new Error('No .standings element found');
 
   await element.screenshot({ path: outputPath });
   await browser.close();
