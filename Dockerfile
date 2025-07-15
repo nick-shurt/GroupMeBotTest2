@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
-WORKDIR /src
+WORKDIR src
 
 # Copy package.json and install dependencies
 COPY package*.json ./
