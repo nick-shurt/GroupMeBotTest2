@@ -62,6 +62,7 @@ async function respond(msg) {
             driversValid = true;
         }
 
+        // if sub is for current week but race has already started, prevent sub
         if (validInput && teamWeek === number && !isSubBeforeRaceStart(date)) {
             console.log("Race has started. Lineups are currently locked.");
             message = "Race has started. Lineups are currently locked.";
