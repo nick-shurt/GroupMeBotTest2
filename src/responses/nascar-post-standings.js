@@ -3,8 +3,8 @@ const bot = require("../bot");
 const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
-const puppeteer = require('puppeteer-core');
-const chromium = require('chrome-aws-lambda');
+const puppeteer = require("puppeteer-core");
+const chromium = require("chrome-aws-lambda");
 
 function trigger(msg) {
   return /@standings/i.test(msg.text);
@@ -12,7 +12,8 @@ function trigger(msg) {
 
 async function respond(msg) {
   try {
-    const url = "https://thefantasynascarleague.com/fantasy_nascar.php?year=2025"; // replace with actual page URL
+    const url =
+      "https://thefantasynascarleague.com/fantasy_nascar.php?year=2025"; // replace with actual page URL
     const screenshotPath = "standings.png";
 
     await captureStandings(url, screenshotPath);
@@ -24,19 +25,27 @@ async function respond(msg) {
   }
 }
 
-async function captureStandings(url, outputPath = 'standings.png') {
+async function captureStandings(url, outputPath = "standings.png") {
+  const executablePath = await chromium.executablePath;
+
+  if (!executablePath) {
+    throw new Error(
+      "Chromium executablePath not found — likely running locally without chrome-aws-lambda"
+    );
+  }
+
   const browser = await puppeteer.launch({
-    executablePath: await chromium.executablePath,
     args: chromium.args,
+    executablePath,
     headless: chromium.headless,
     defaultViewport: chromium.defaultViewport,
   });
 
   const page = await browser.newPage();
-  await page.goto(url, { waitUntil: 'networkidle0' });
+  await page.goto(url, { waitUntil: "networkidle0" });
 
-  const element = await page.$('.standings');
-  if (!element) throw new Error('No .standings element found');
+  const element = await page.$(".standings");
+  if (!element) throw new Error("No .standings element found");
 
   await element.screenshot({ path: outputPath });
   await browser.close();
