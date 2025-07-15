@@ -3,6 +3,7 @@ const bot = require("../bot");
 const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
+const puppeteer = require('puppeteer');
 
 function trigger(msg) {
   return /@standings/i.test(msg.text);
