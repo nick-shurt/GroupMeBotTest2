@@ -67,9 +67,9 @@ async function captureStandings(url, outputPath = 'standings.png') {
     await page.screenshot({ path: debugPath, fullPage: true });
 
     try {
-      const debugUrl = await uploadToGroupMe(debugPath);
+      const debugUrl = await uploadImageToGroupMe(debugPath);
       console.log('📤 Uploaded debug screenshot to GroupMe');
-      await postToGroupMe(debugUrl, '⚠️ Failed to capture .standings. Here is a full-page debug screenshot.');
+      await postImageToGroup(debugUrl, '⚠️ Failed to capture .standings. Here is a full-page debug screenshot.');
     } catch (uploadErr) {
       console.error('❌ Failed to upload debug screenshot:', uploadErr.message);
     }
