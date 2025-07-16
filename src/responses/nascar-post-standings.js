@@ -33,7 +33,7 @@ async function respond(msg) {
 async function captureStandings(url, outputPath = 'standings.png') {
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: '/usr/bin/chromium', // for Docker (on Render)
+    executablePath: '/usr/bin/chromium', // Required for Docker (Render)
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
@@ -47,27 +47,32 @@ async function captureStandings(url, outputPath = 'standings.png') {
     await page.waitForSelector('.standings', { visible: true, timeout: 10000 });
 
     const element = await page.$('.standings');
-    if (!element) {
-      throw new Error('❌ Could not find .standings element');
-    }
+    if (!element) throw new Error('❌ Could not find .standings element');
 
-    // Ensure element is on screen
     await page.evaluate(() => {
       const el = document.querySelector('.standings');
       el?.scrollIntoView();
     });
 
-    console.log('📸 Capturing screenshot...');
+    console.log('📸 Capturing screenshot of .standings...');
     await element.screenshot({ path: outputPath });
-
     console.log(`✅ Screenshot saved to ${outputPath}`);
-  } catch (err) {
-    console.error('❌ Error during screenshot capture:', err.message);
+    return outputPath;
 
-    // Capture fallback full-page screenshot for debugging
+  } catch (err) {
+    console.error('❌ Error during capture:', err.message);
+
     const debugPath = 'debug_fullpage.png';
+    console.log('📷 Capturing full-page fallback screenshot...');
     await page.screenshot({ path: debugPath, fullPage: true });
-    console.log(`📷 Saved full-page debug screenshot to ${debugPath}`);
+
+    try {
+      const debugUrl = await uploadToGroupMe(debugPath);
+      console.log('📤 Uploaded debug screenshot to GroupMe');
+      await postToGroupMe(debugUrl, '⚠️ Failed to capture .standings. Here is a full-page debug screenshot.');
+    } catch (uploadErr) {
+      console.error('❌ Failed to upload debug screenshot:', uploadErr.message);
+    }
   } finally {
     await browser.close();
   }
