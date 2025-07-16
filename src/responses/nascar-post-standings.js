@@ -30,24 +30,47 @@ async function respond(msg) {
   }
 }
 
-async function captureStandings(url, outputPath) {
+async function captureStandings(url, outputPath = 'standings.png') {
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: '/usr/bin/chromium',
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    executablePath: '/usr/bin/chromium', // for Docker (on Render)
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
   const page = await browser.newPage();
-  await page.goto(url, { waitUntil: 'networkidle0' });
 
-  const element = await page.$('.standings');
-  if (!element) {
+  try {
+    console.log('📡 Navigating to:', url);
+    await page.goto(url, { waitUntil: 'networkidle0' });
+
+    console.log('⌛ Waiting for .standings to be visible...');
+    await page.waitForSelector('.standings', { visible: true, timeout: 10000 });
+
+    const element = await page.$('.standings');
+    if (!element) {
+      throw new Error('❌ Could not find .standings element');
+    }
+
+    // Ensure element is on screen
+    await page.evaluate(() => {
+      const el = document.querySelector('.standings');
+      el?.scrollIntoView();
+    });
+
+    console.log('📸 Capturing screenshot...');
+    await element.screenshot({ path: outputPath });
+
+    console.log(`✅ Screenshot saved to ${outputPath}`);
+  } catch (err) {
+    console.error('❌ Error during screenshot capture:', err.message);
+
+    // Capture fallback full-page screenshot for debugging
+    const debugPath = 'debug_fullpage.png';
+    await page.screenshot({ path: debugPath, fullPage: true });
+    console.log(`📷 Saved full-page debug screenshot to ${debugPath}`);
+  } finally {
     await browser.close();
-    throw new Error('No .standings element found on the page.');
   }
-
-  await element.screenshot({ path: outputPath });
-  await browser.close();
 }
 
 async function uploadImageToGroupMe(imagePath) {
