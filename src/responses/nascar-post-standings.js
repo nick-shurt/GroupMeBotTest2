@@ -40,13 +40,8 @@ async function captureStandings(url, outputPath = 'standings.png') {
   const page = await browser.newPage();
 
   try {
-    console.log('📡 Navigating to:', url);
     await page.goto(url, { waitUntil: 'networkidle0' });
-
-    console.log('🖱 Simulating click to Standings tab...');
     await page.click('a[href="#tab3"]');
-
-    console.log('⌛ Waiting for .standings to be visible...');
     await page.waitForSelector('.standings', { visible: true, timeout: 10000 });
 
     const element = await page.$('.standings');
@@ -55,27 +50,17 @@ async function captureStandings(url, outputPath = 'standings.png') {
     await page.evaluate(() => {
       const el = document.querySelector('.standings');
       el?.scrollIntoView();
+
+      if (el) {
+        el.style.padding = '50px 0px';
+      }
     });
 
-    console.log('📸 Capturing screenshot of .standings...');
     await element.screenshot({ path: outputPath });
-    console.log(`✅ Screenshot saved to ${outputPath}`);
     return outputPath;
 
   } catch (err) {
     console.error('❌ Error during capture:', err.message);
-
-    const debugPath = 'debug_fullpage.png';
-    console.log('📷 Capturing full-page fallback screenshot...');
-    await page.screenshot({ path: debugPath, fullPage: true });
-
-    try {
-      const debugUrl = await uploadImageToGroupMe(debugPath);
-      console.log('📤 Uploaded debug screenshot to GroupMe');
-      await postImageToGroup(debugUrl, '⚠️ Failed to capture .standings. Here is a full-page debug screenshot.');
-    } catch (uploadErr) {
-      console.error('❌ Failed to upload debug screenshot:', uploadErr.message);
-    }
   } finally {
     await browser.close();
   }
