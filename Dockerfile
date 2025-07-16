@@ -1,6 +1,6 @@
 FROM node:18-slim
 
-# Install Chromium and dependencies
+# Install Chromium and required libraries
 RUN apt-get update && apt-get install -y \
   chromium \
   fonts-liberation \
@@ -16,19 +16,21 @@ RUN apt-get update && apt-get install -y \
   libxrandr2 \
   xdg-utils \
   wget \
-  --no-install-recommends \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  --no-install-recommends && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
-# Set the working directory
-WORKDIR src
+# Set working directory
+WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy dependency definitions
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the app
+# Copy all other files (including the src/ folder)
 COPY . .
 
-# Start the bot
-CMD ["node", "index.js"]
+# Start the app
+CMD ["node", "src/index.js"]
