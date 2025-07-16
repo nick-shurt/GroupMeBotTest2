@@ -43,6 +43,9 @@ async function captureStandings(url, outputPath = 'standings.png') {
     console.log('📡 Navigating to:', url);
     await page.goto(url, { waitUntil: 'networkidle0' });
 
+    console.log('🖱 Simulating click to Standings tab...');
+    await page.click('a[href="#tab3"]');
+
     console.log('⌛ Waiting for .standings to be visible...');
     await page.waitForSelector('.standings', { visible: true, timeout: 10000 });
 
