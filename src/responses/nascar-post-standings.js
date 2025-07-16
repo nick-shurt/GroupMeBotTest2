@@ -52,7 +52,7 @@ async function captureStandings(url, outputPath = 'standings.png') {
       el?.scrollIntoView();
 
       if (el) {
-        el.style.padding = '50px 0px';
+        el.style.padding = '20px 15px';
       }
     });
 
