@@ -1,7 +1,7 @@
 const bot = require("../bot");
 
 function trigger(msg) {
-  return /wins pool standings/i.test(msg.text);
+  return /standings/i.test(msg.text);
 }
 
 async function respond(msg) {
@@ -10,61 +10,61 @@ async function respond(msg) {
       pool: [
         {
           nick: {
-            teams: { team1: "bills", team2: "steelers", team3: "colts" },
+            teams: { team1: "BUF", team2: "PIT", team3: "IND" },
             wins: 0
           }
         },
         {
           matt: {
-            teams: { team1: "49ers", team2: "vikings", team3: "falcons" },
+            teams: { team1: "SF", team2: "MIN", team3: "ATL" },
             wins: 0
           }
         },
         {
           dockman: {
-            teams: { team1: "buccaneers", team2: "cowboys", team3: "jaguars" },
+            teams: { team1: "TB", team2: "DAL", team3: "JAX" },
             wins: 0
           }
         },
         {
           donna: {
-            teams: { team1: "lions", team2: "seahawks", team3: "raiders" },
+            teams: { team1: "DET", team2: "SEA", team3: "LV" },
             wins: 0
           }
         },
         {
           jim: {
-            teams: { team1: "commanders", team2: "broncos", team3: "bears" },
+            teams: { team1: "WSH", team2: "DEN", team3: "CHI" },
             wins: 0
           }
         },
         {
           joey: {
-            teams: { team1: "ravens", team2: "patriots", team3: "panthers" },
+            teams: { team1: "BAL", team2: "NE", team3: "CAR" },
             wins: 0
           }
         },
         {
           john: {
-            teams: { team1: "packers", team2: "bengals", team3: "jets" },
+            teams: { team1: "GB", team2: "CIN", team3: "NYJ" },
             wins: 0
           }
         },
         {
           mike: {
-            teams: { team1: "eagles", team2: "chargers", team3: "titans" },
+            teams: { team1: "PHI", team2: "LAC", team3: "TEN" },
             wins: 0
           }
         },
         {
           pat: {
-            teams: { team1: "rams", team2: "cardinals", team3: "dolphins" },
+            teams: { team1: "LAR", team2: "ARI", team3: "MIA" },
             wins: 0
           }
         },
         {
           ricky: {
-            teams: { team1: "chiefs", team2: "texans", team3: "giants" },
+            teams: { team1: "KC", team2: "HOU", team3: "NYG" },
             wins: 0
           }
         }
@@ -98,7 +98,6 @@ async function fetchNflWins() {
       const team = entry.team;
       const abbr = team.abbreviation;
 
-      // Find overall or total record object
       const rec = entry.records.find(r =>
         r.type === "total" ||
         r.name?.toLowerCase() === "overall"
@@ -131,16 +130,13 @@ function updatePoolWins(poolData, winsByTeam) {
   poolData.pool.forEach(entry => {
     const playerName = Object.keys(entry)[0];
     const playerData = entry[playerName];
-
     const teams = playerData.teams;
 
     let totalWins = 0;
 
-    // Loop through team1, team2, team3
     Object.values(teams).forEach(teamName => {
-      const abbr = teamName.toUpperCase();   // your teams are lowercase strings like "bills"
-      if (winsByTeam[abbr] !== undefined) {
-        totalWins += winsByTeam[abbr];
+      if (winsByTeam[teamName] !== undefined) {
+        totalWins += winsByTeam[teamName];
       }
     });
 
