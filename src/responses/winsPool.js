@@ -75,7 +75,7 @@ async function respond(msg) {
         console.log("NFL Wins:", winsByTeam);
         const updatedPoolData = updatePoolWins(pool, winsByTeam);
         console.log(JSON.stringify(updatedPoolData, null, 2));
-        
+
         setTimeout(function() {
           bot.postMsg(formatWinsTable(updatedPoolData));
         }, 1000);
@@ -152,18 +152,23 @@ function updatePoolWins(poolData, winsByTeam) {
 
 function formatWinsTable(poolData) {
   const players = poolData.pool.map(entry => {
-    const name = Object.keys(entry)[0];
-    const wins = entry[name].wins;
+    const rawName = Object.keys(entry)[0];
+    const name = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase();
+    const wins = entry[rawName].wins;
     return { name, wins };
   });
 
   players.sort((a, b) => b.wins - a.wins);
 
-  let output = "Wins Pool\n";
-  output += "--------------------------\n";
+  const longestName = Math.max(...players.map(p => p.name.length));
+  const nameColWidth = longestName + 2; // padding
+
+  let output = "Standings\n";
+  output += "-------------------------------\n";
 
   players.forEach(p => {
-    output += `${p.name}: ${p.wins}\n`;
+    const paddedName = p.name.padEnd(nameColWidth, " ");
+    output += `${paddedName}${p.wins}\n`;
   });
 
   return output;
