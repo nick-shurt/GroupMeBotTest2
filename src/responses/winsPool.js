@@ -162,19 +162,17 @@ function formatWinsTable(poolData) {
 
   const nameColWidth = Math.max(...players.map(p => p.name.length)) + 2;
 
-  let output = "```\n";// <-- forces monospace formatting
-  output += "Wins Pool\n";
-  output += "-------------------------------\n";
+  let output = "Wins Pool\n";
+  output += "--------------------------\n";
 
   players.forEach(p => {
-    const paddedName = p.name.padEnd(nameColWidth, " ");
+    const paddedName = p.name.padEnd(nameColWidth, " ");  // spaces only
     output += `${paddedName}${p.wins}\n`;
   });
 
-  output += "```";// <= end monospace formatting
-
   return output;
 }
+
 
 
 exports.trigger = trigger;
