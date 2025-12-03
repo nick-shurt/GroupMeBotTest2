@@ -73,8 +73,12 @@ async function respond(msg) {
     fetchNflWins()
       .then((winsByTeam) => {
         console.log("NFL Wins:", winsByTeam);
-        const updated = updatePoolWins(pool, winsByTeam);
-        console.log(JSON.stringify(updated, null, 2));
+        const updatedPoolData = updatePoolWins(pool, winsByTeam);
+        console.log(JSON.stringify(updatedPoolData, null, 2));
+        
+        setTimeout(function() {
+          bot.postMsg(formatWinsTable(updatedPoolData));
+        }, 1000);
       })
       .catch(err => console.error(err));
   } catch (err) {
@@ -144,6 +148,25 @@ function updatePoolWins(poolData, winsByTeam) {
   });
 
   return poolData;
+}
+
+function formatWinsTable(poolData) {
+  const players = poolData.pool.map(entry => {
+    const name = Object.keys(entry)[0];
+    const wins = entry[name].wins;
+    return { name, wins };
+  });
+
+  players.sort((a, b) => b.wins - a.wins);
+
+  let output = "Wins Pool\n";
+  output += "--------------------------\n";
+
+  players.forEach(p => {
+    output += `${p.name}: ${p.wins}\n`;
+  });
+
+  return output;
 }
 
 exports.trigger = trigger;
