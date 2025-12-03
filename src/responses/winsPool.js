@@ -160,10 +160,10 @@ function formatWinsTable(poolData) {
 
   players.sort((a, b) => b.wins - a.wins);
 
-  const longestName = Math.max(...players.map(p => p.name.length));
-  const nameColWidth = longestName + 2; // padding
+  const nameColWidth = Math.max(...players.map(p => p.name.length)) + 2;
 
-  let output = "Standings\n";
+  let output = "```\n";// <-- forces monospace formatting
+  output += "Standings\n";
   output += "-------------------------------\n";
 
   players.forEach(p => {
@@ -171,8 +171,11 @@ function formatWinsTable(poolData) {
     output += `${paddedName}${p.wins}\n`;
   });
 
+  output += "```";// <= end monospace formatting
+
   return output;
 }
+
 
 exports.trigger = trigger;
 exports.respond = respond;
