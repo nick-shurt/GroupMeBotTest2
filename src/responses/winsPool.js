@@ -163,7 +163,7 @@ function formatWinsTable(poolData) {
   const nameColWidth = Math.max(...players.map(p => p.name.length)) + 2;
 
   let output = "```\n";// <-- forces monospace formatting
-  output += "Standings\n";
+  output += "Wins Pool\n";
   output += "-------------------------------\n";
 
   players.forEach(p => {
